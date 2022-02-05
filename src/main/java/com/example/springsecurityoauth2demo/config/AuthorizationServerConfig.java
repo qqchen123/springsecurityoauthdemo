@@ -10,6 +10,7 @@ import org.springframework.security.oauth2.config.annotation.configurers.ClientD
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
+import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
 import org.springframework.security.oauth2.provider.token.TokenEnhancer;
 import org.springframework.security.oauth2.provider.token.TokenEnhancerChain;
 import org.springframework.security.oauth2.provider.token.TokenStore;
@@ -73,12 +74,20 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
                 .accessTokenValiditySeconds(3600)
                 .refreshTokenValiditySeconds(864000)
 //                配置redirect_uri,用于授权成功后跳转（重定向的uri）
-                .redirectUris("https://www.baidu.com")
+//                .redirectUris("https://www.baidu.com")
+                .redirectUris("http://localhost:8081/login")
 //                配置申请的权限范围（授权范围）
                 .scopes("all")
+                .autoApprove(true)
 //                配置grant_type，表示授权类型（既支持授权码，也支持密码）
                 .authorizedGrantTypes("authorization_code", "password", "refresh_token");
     }
 
 //    http://localhost:8080/oauth/authorize?response_type=code&client_id=admin&redirect_uri=https://www.baidu.com&scope=all
+
+    @Override
+    public void configure(AuthorizationServerSecurityConfigurer security) throws Exception {
+        // 获取秘钥需要身份认证，使用单点登录时必须配置
+        security.tokenKeyAccess("isAuthenticated()");
+    }
 }
