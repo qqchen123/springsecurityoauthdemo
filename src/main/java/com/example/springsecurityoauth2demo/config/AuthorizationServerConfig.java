@@ -77,7 +77,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 //                配置申请的权限范围（授权范围）
                 .scopes("all")
 //                配置grant_type，表示授权类型（既支持授权码，也支持密码）
-                .authorizedGrantTypes("authorization_code", "password");
+                .authorizedGrantTypes("authorization_code", "password", "refresh_token");
     }
 
 //    http://localhost:8080/oauth/authorize?response_type=code&client_id=admin&redirect_uri=https://www.baidu.com&scope=all
